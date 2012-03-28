@@ -10,11 +10,11 @@
 ## 2. Requirements
 
 The Ikibox Content Management System has the following, recommended, requirements to insure a stable and functioning service.
-- Ubuntu (or any other Linux distribution) though it SHOULD be 64-bit!
-- Ruby 1.9.3p125
-- MonogDB v1.8.2
-- Nginx or Apache (no particular version needed, we recommend Nginx for production)
-- Redis server v2.2.11
+1. Ubuntu (or any other Linux distribution) though it SHOULD be 64-bit!
+2. Ruby 1.9.3p125
+3. MonogDB v1.8.2
+4. Nginx or Apache (no particular version needed, we recommend Nginx for production)
+5. Redis server v2.2.11
 
 ## 3. Installation
 This guide will ensure a running environment. However it won't get into 
@@ -39,14 +39,14 @@ Install Git-core.
 ### 3.2 Rbenv
 Website-development has decided to switch from RVM to Rbenv for 
 management of different Ruby versions and gems. The following installation
-commands are for a system wide installation of Rbenv. If this is now 
+commands are for a system wide installation of Rbenv. 
 
 Download the Rbenv from Github.
     
     git clone git://github.com/sstephenson/rbenv.git /usr/local/rbenv
 
 Now you need to add Rbenv to the path.
-First create a profile and added RBenv.
+First create a profile and add RBenv.
     
     echo '# rbenv setup' > /etc/profile.d/rbenv.sh
     echo 'export RBENV_ROOT=/usr/local/rbenv' >> /etc/profile.d/rbenv.sh
@@ -78,7 +78,7 @@ To install Ruby use the following commands.
     
     rbenv install 1.9.3-p125
 
-Make it the default Ruby version (just to make sure it all is working in the future)
+Make it the default Ruby version (just to make sure it's working in the future)
     
     rbenv global 1.9.3-p125
 
@@ -88,7 +88,7 @@ And rehash to make Ruby work in the current session.
 
 ### 3.4 Install Nginx and Passenger
 First make sure that Nginx is not installed (Passenger will install it when it is done). Note 
-that Nginx does not support loadable, in contrast to most other web servers. This is why it is 
+that Nginx does not support loadable modules, in contrast to most other web servers. This is why it is 
 essential you know what you are doing!
 
 Install Passenger.
@@ -147,7 +147,6 @@ Replace it with the following, of course edit the file to make it work (change t
      
         } 
         
-
 start nginx
     
     service nginx start
@@ -262,36 +261,36 @@ The following, flexible, database structure is created to be a dynamic environme
 able to handle any type of data structure.
 
 The System has the following models
-- Assets (every file uploaded in the system has gets an asset record assigned to them. When the record of the asset is
+1. Assets (every file uploaded in the system has gets an asset record assigned to them. When the record of the asset is
 destroyed, so will the associated file).
-- Clients (Clients are models which are just for keeping the system organized (especially when there are 30 or more clients, of 
+2. Clients (Clients are models which are just for keeping the system organized (especially when there are 30 or more clients, of 
 course Clients can be associated with other clients and Websites)
-- Websites (Websites are the entering point for requests. Websites can have multiple Domains and Slugs associated with them). 
-- Documents (Documents are "virtual" models. Documents should always be associated with clients or websites)
-- Records (Records are the actual instance of documents (or virtual models as you will). These are the most important pieces in the 
+3. Websites (Websites are the entering point for requests. Websites can have multiple Domains and Slugs associated with them). 
+4. Documents (Documents are "virtual" models. Documents should always be associated with clients or websites)
+5. Records (Records are the actual instance of documents (or virtual models as you will). These are the most important pieces in the 
 system.).
-- Groups and Users (The Ikibox system has a RBAC system for user authentication. Rights can be associated to groups, users, documents, 
+6. Groups and Users (The Ikibox system has a RBAC system for user authentication. Rights can be associated to groups, users, documents, 
 websites and any type of "primary" model (listed above).)
 
 To allow the system to be as flexible as possible some primary models have relations with non primary models. These are models 
 who do not get a BSON::ObjectId associated with them and can't be linked to outside the scope of the primary instances of the models. 
 Websites:
-- Slugs (Every website, as a default, doesn't allow any url to pass. Every url should be saved as a slug, the website in turn will allow request
+7. Slugs (Every website, as a default, doesn't allow any url to pass. Every url should be saved as a slug, the website in turn will allow request
 those requests to pass).
-- Domains are associated with websites. (To allow traffic to specific websites, the system needs to know which websites are responsible for which 
+8. Domains are associated with websites. (To allow traffic to specific websites, the system needs to know which websites are responsible for which 
 domains)
 
 Documents:
-- Keys (Are the keys for the virtual model, when keys are associated with a documents associations of that documents will inherit methods with the name
+9. Keys (Are the keys for the virtual model, when keys are associated with a documents associations of that documents will inherit methods with the name
 of the key)
-- Validations (Validations are the specific rules the value of keys should pass before they are saved to the database)
+10. Validations (Validations are the specific rules the value of keys should pass before they are saved to the database)
 
 All Primary models (Inherited through the IKI model)
-- Rights (To allow the most flexible RBAC system every primary model has the ability to be associated with groups or users and assigned a 
+11. Rights (To allow the most flexible RBAC system every primary model has the ability to be associated with groups or users and assigned a 
 specific permission)
-- Connections (Connections are the most important part of the system. Every primary model has the ability to be associate to other instance of 
+12. Connections (Connections are the most important part of the system. Every primary model has the ability to be associate to other instance of 
 primary models. With this solution very complex tree structures can be created.)
-- Filters (are not used)
+13. Filters (are not used)
 
 
 ## 7. CMS Usage (Not applicable for StudieTimer)
