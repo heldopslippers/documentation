@@ -263,22 +263,22 @@ able to handle any type of data structure.
 
 The System has the following models
 
-1. Assets (every file uploaded in the system has gets an asset record assigned to them. When the record of the asset is
+1. Assets (every file uploaded in the system gets an asset record assigned to them. When the record of the asset is
 destroyed, so will the associated file).
 2. Clients (Clients are models which are just for keeping the system organized (especially when there are 30 or more clients, of 
 course Clients can be associated with other clients and Websites)
-3. Websites (Websites are the entering point for requests. Websites can have multiple Domains and Slugs associated with them). 
+3. Websites (Websites are the entering point for requests. Websites could have multiple Domains and Slugs associated to them). 
 4. Documents (Documents are "virtual" models. Documents should always be associated with clients or websites)
-5. Records (Records are the actual instance of documents (or virtual models as you will). These are the most important pieces in the 
-system.).
+5. Records (Records are the actual instance of the instance of documents (or virtual models as you will). These are the most important pieces in the 
+system).
 6. Groups and Users (The Ikibox system has a RBAC system for user authentication. Rights can be associated to groups, users, documents, 
-websites and any type of "primary" model (listed above).)
+websites and any type of "primary" model (listed above)).
 
 To allow the system to be as flexible as possible some primary models have relations with non primary models. These are models 
 who do not get a BSON::ObjectId associated with them and can't be linked to outside the scope of the primary instances of the models. 
-Websites:
+For Websites these are:
 
-1. Slugs (Every website, as a default, doesn't allow any url to pass. Every url should be saved as a slug, the website in turn will allow request
+1. Slugs (Every website, as a default, doesn't allow any url to pass. Every url should be saved as a slug, the website in turn will allow
 those requests to pass).
 2. Domains are associated with websites. (To allow traffic to specific websites, the system needs to know which websites are responsible for which 
 domains)
@@ -286,16 +286,16 @@ domains)
 
 Documents:
 
-1. Keys (Are the keys for the virtual model, when keys are associated with a documents associations of that documents will inherit methods with the name
+1. Keys (Are the keys for the virtual model, when keys are associated with the instance of a Document, associations of that document will inherit methods with the name
 of the key)
-2. Validations (Validations are the specific rules the value of keys should pass before they are saved to the database)
+2. Validations (Validations are specific rules. The value of the keys should pass before they are saved to the database)
 
 
 All Primary models (Inherited through the IKI model)
 
 1. Rights (To allow the most flexible RBAC system every primary model has the ability to be associated with groups or users and assigned a 
 specific permission)
-2. Connections (Connections are the most important part of the system. Every primary model has the ability to be associate to other instance of 
+2. Connections (Connections are the most important part of the system. Every primary model has the ability to be associated to other instances of 
 primary models. With this solution very complex tree structures can be created.)
 3. Filters (are not used)
 
