@@ -10,6 +10,7 @@
 ## 2. Requirements
 
 The Ikibox Content Management System has the following, recommended, requirements to insure a stable and functioning service.
+
 1. Ubuntu (or any other Linux distribution) though it SHOULD be 64-bit!
 2. Ruby 1.9.3p125
 3. MonogDB v1.8.2
