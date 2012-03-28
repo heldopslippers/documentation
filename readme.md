@@ -277,22 +277,27 @@ websites and any type of "primary" model (listed above).)
 To allow the system to be as flexible as possible some primary models have relations with non primary models. These are models 
 who do not get a BSON::ObjectId associated with them and can't be linked to outside the scope of the primary instances of the models. 
 Websites:
-7. Slugs (Every website, as a default, doesn't allow any url to pass. Every url should be saved as a slug, the website in turn will allow request
+
+1. Slugs (Every website, as a default, doesn't allow any url to pass. Every url should be saved as a slug, the website in turn will allow request
 those requests to pass).
-8. Domains are associated with websites. (To allow traffic to specific websites, the system needs to know which websites are responsible for which 
+2. Domains are associated with websites. (To allow traffic to specific websites, the system needs to know which websites are responsible for which 
 domains)
 
+
 Documents:
-9. Keys (Are the keys for the virtual model, when keys are associated with a documents associations of that documents will inherit methods with the name
+
+1. Keys (Are the keys for the virtual model, when keys are associated with a documents associations of that documents will inherit methods with the name
 of the key)
-10. Validations (Validations are the specific rules the value of keys should pass before they are saved to the database)
+2. Validations (Validations are the specific rules the value of keys should pass before they are saved to the database)
+
 
 All Primary models (Inherited through the IKI model)
-11. Rights (To allow the most flexible RBAC system every primary model has the ability to be associated with groups or users and assigned a 
+
+1. Rights (To allow the most flexible RBAC system every primary model has the ability to be associated with groups or users and assigned a 
 specific permission)
-12. Connections (Connections are the most important part of the system. Every primary model has the ability to be associate to other instance of 
+2. Connections (Connections are the most important part of the system. Every primary model has the ability to be associate to other instance of 
 primary models. With this solution very complex tree structures can be created.)
-13. Filters (are not used)
+3. Filters (are not used)
 
 
 ## 7. CMS Usage (Not applicable for StudieTimer)
