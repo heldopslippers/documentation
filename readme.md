@@ -2,11 +2,10 @@
 1. Menu
 2. Requirements
 3. Installation process
-4. Usefull commands
+4. Useful commands
 5. System Setup
 6. Internal global DB structure
-7. Special StudieTimer section
-8. CMS Usage (Not applicable for StudieTimer)
+7. CMS Usage (Not applicable for StudieTimer)
 
 ## 2. Requirements
 
@@ -18,9 +17,9 @@ The Ikibox Content Management System has the following, recommended, requirement
 - Redis server v2.2.11
 
 ## 3. Installation
-This quide wil ensure a running environment. However it won't get into 
-deployment strategies (like Capistrano and GIT setup). The follwing commands
-can be extremly dangerous, Website-development and Briljandt are not responsible
+This guide will ensure a running environment. However it won't get into 
+deployment strategies (like Capistrano and GIT setup). The following commands
+can be extremely dangerous, Website-development and Briljandt are not responsible
 for any damage the following commands could do to your system!
 
 ### 3.1 Update Ubuntu
@@ -29,7 +28,7 @@ Update and upgrade Ubuntu (probably with sudo, depending on settings and Linux d
     apt-get update
     apt-get -y upgrade
 
-Install the build-essentials (problably not installed yet)
+Install the build-essentials (probably not installed yet)
     
     apt-get -y install build-essential
 
@@ -96,7 +95,7 @@ Install Passenger.
     
     gem install passenger
 
-Install the Nginx module for Passenger. And follow the installer (there are problably some 
+Install the Nginx module for Passenger. And follow the installer (there are probably some 
 things still missing)
     
     passenger-install-nginx-module
@@ -105,7 +104,7 @@ Edit the Nginx config file (if you don't know VIM, LEARN IT).
     
     vim /opt/nginx/conf/nginx.conf
 
-Replace it with the following, of course edit the file to make it work (change the debug, acces, error and root locations).
+Replace it with the following, of course edit the file to make it work (change the debug, access, error and root locations).
     
     #user  nobody; 
     worker_processes  1; 
@@ -156,7 +155,8 @@ start nginx
 
 
 ### 3.5 require gems
-Installing all the required gems is a breeze. This is where Bundler commes in:
+Installing all the required gems is a breeze. 
+First install Bundler
     
     gem install bundler
 
@@ -228,38 +228,100 @@ Test it.
     which wkhtmltopdf
 
 
-### 4. Usefull commands
+## 4. Useful commands
 
 Starting a production console (from the location of the ikibox root):
     
     RACK_ENV=production bundle exec tux
 
-### 5. System setup
+## 5. System setup
 
 The Ikibox CMS is based on the MVC pattern (like Rails for example), it is however
 totally build with Sinatra. The system is build in four distinct parts:
 
-#### 5.1 Websites Controller
+### 5.1 Websites Controller
 The websites controller is in charge of serving the actual webpages for the virtual stored 
 websites. Virtual trees are created to calculate the most efficient way to different parts in the 
 website (A LOT of tree traversing is done). 
 
-#### 5.2 CMS Controller (Not applicable for StudieTimer)
+### 5.2 CMS Controller (Not applicable for StudieTimer)
 The CMS controller is in charge of any request related to CRUD (For
 good reasons REST is not implemented).
 
-#### 5.3 Code Controller
-Due to the implementation of a virtual filesystem and not completed FTP interface, the code controller whas 
+### 5.3 Code Controller
+Due to the implementation of a virtual filesystem and not completed FTP interface, the code controller was 
 created as a temporary solution to make CRUD actions possible on files. This is the only way to edit the HTML 
 and Ruby files.
 
-#### 5.4 Admin Controller
+### 5.4 Admin Controller
 The admin controller is the interface to create website and manage the virtual Models, attributes, domains etc. 
 
 
-### 6. Internal global DB structure
-The following, flexible, database structure is created to be a dynamic environment which could (theoraticaly) be 
+## 6. Internal global DB structure
+The following, flexible, database structure is created to be a dynamic environment which could (theoretically) be 
 able to handle any type of data structure.
 
+The System has the following models
+- Assets (every file uploaded in the system has gets an asset record assigned to them. When the record of the asset is
+destroyed, so will the associated file).
+- Clients (Clients are models which are just for keeping the system organized (especially when there are 30 or more clients, of 
+course Clients can be associated with other clients and Websites)
+- Websites (Websites are the entering point for requests. Websites can have multiple Domains and Slugs associated with them). 
+- Documents (Documents are "virtual" models. Documents should always be associated with clients or websites)
+- Records (Records are the actual instance of documents (or virtual models as you will). These are the most important pieces in the 
+system.).
+- Groups and Users (The Ikibox system has a RBAC system for user authentication. Rights can be associated to groups, users, documents, 
+websites and any type of "primary" model (listed above).)
+
+To allow the system to be as flexible as possible some primary models have relations with non primary models. These are models 
+who do not get a BSON::ObjectId associated with them and can't be linked to outside the scope of the primary instances of the models. 
+Websites:
+- Slugs (Every website, as a default, doesn't allow any url to pass. Every url should be saved as a slug, the website in turn will allow request
+those requests to pass).
+- Domains are associated with websites. (To allow traffic to specific websites, the system needs to know which websites are responsible for which 
+domains)
+
+Documents:
+- Keys (Are the keys for the virtual model, when keys are associated with a documents associations of that documents will inherit methods with the name
+of the key)
+- Validations (Validations are the specific rules the value of keys should pass before they are saved to the database)
+
+All Primary models (Inherited through the IKI model)
+- Rights (To allow the most flexible RBAC system every primary model has the ability to be associated with groups or users and assigned a 
+specific permission)
+- Connections (Connections are the most important part of the system. Every primary model has the ability to be associate to other instance of 
+primary models. With this solution very complex tree structures can be created.)
+- Filters (are not used)
 
 
+## 7. CMS Usage (Not applicable for StudieTimer)
+
+The CMS methods are designed to make a flexible CMS possible:
+
+Add:
+    
+    add [[Model name], [Position in the tree], [Section name / and file name], [multiple files for rendering]]
+
+Edit
+    
+    edit [record id]
+
+To make records sortable, two settings are required. First in the wrapper.
+    
+    sortable=[section name]
+
+Second, for the records the should be sortable.
+    
+    sort=[record id]
+
+Sections are methods that render all child records in the tree with a specific section name
+    
+    Section [section name], [parent position]
+
+Layouts can be used to render the current selected record in the tree (again for a specific section name)
+    
+    layout [section name], [current position]
+
+Partials can be used to render specific files:
+    
+    partial  [file name], [optional document name]
