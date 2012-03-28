@@ -262,6 +262,7 @@ The following, flexible, database structure is created to be a dynamic environme
 able to handle any type of data structure.
 
 The System has the following models
+
 1. Assets (every file uploaded in the system has gets an asset record assigned to them. When the record of the asset is
 destroyed, so will the associated file).
 2. Clients (Clients are models which are just for keeping the system organized (especially when there are 30 or more clients, of 
